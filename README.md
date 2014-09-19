@@ -1,4 +1,4 @@
-Visualization frontend for brain connectivity data
+Visualization frontend for neuroNER
 ========
 
 Author: renaud.richardet@epfl.ch
@@ -20,12 +20,12 @@ Author: renaud.richardet@epfl.ch
 
 * MySQL server (5.5 or higher)
 * Python dependencies
-    * pip install PyMySQL
+    * pip install pymysql
     * pip install simplejson
     * pip install tornado
 
-* install database from zip
-* configure connection details in server.py
+* install database from zip in db/ folder
+* configure connection details in config.json
 
 ### Start
 
