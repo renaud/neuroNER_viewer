@@ -13,7 +13,7 @@ CREATE TABLE `20140915_neurons` (
   `type`        varchar(64)      NOT NULL DEFAULT '',
   `txt`         varchar(128)     NOT NULL DEFAULT '',
    PRIMARY KEY (`id`),
-   KEY `idx_text`       (`text`),
+   KEY `idx_text`       (`txt`),
    KEY `idx_type`       (`type`),
    KEY `idx_neuron_id`  (`neuron_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -33,7 +33,15 @@ CREATE TABLE `20140915_sentences` (
 -- LOAD DATA
 -- ----------------------------------------
 -- cd db
--- mysql  --local-infile
+-- mysql -uroot --local-infile
 use neuroner_viewer;
 LOAD DATA LOCAL INFILE 'aggregate.tsv' INTO TABLE 20140915_neurons FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (pmid, neuron_id, sentence_id, beg, end, type, txt);
 LOAD DATA LOCAL INFILE 'aggregate_sentences.tsv' INTO TABLE 20140915_sentences FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (sentence_id, txt);
+
+
+-- 2nd version
+use neuroner_viewer;
+CREATE TABLE 20140930_neurons   LIKE 20140915_neurons;
+CREATE TABLE 20140930_sentences LIKE 20140915_sentences;
+LOAD DATA LOCAL INFILE 'aggregate.tsv' INTO TABLE 20140930_neurons FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (pmid, neuron_id, sentence_id, beg, end, type, txt);
+LOAD DATA LOCAL INFILE 'aggregate_sentences.tsv' INTO TABLE 20140930_sentences FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (sentence_id, txt);

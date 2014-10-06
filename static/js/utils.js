@@ -5,12 +5,12 @@
 $(document).ready(function() {
 
   // prevents hitting 'enter' to submit the form
-  $('.no-return').keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  });
+  // $('.no-return').keydown(function(event){
+  //   if(event.keyCode == 13) {
+  //     event.preventDefault();
+  //     event.stopPropagation();
+  //   }
+  // });
 });
 
 
