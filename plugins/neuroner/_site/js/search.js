@@ -1,5 +1,5 @@
 
-var myindex = 'neuroner_20141014_2';
+var myindex = 'neuroner_20141016';
 
 var client = new elasticsearch.Client({
   host: 'localhost:9200',
@@ -13,14 +13,9 @@ function simple_search(query_str, _size, _from){
       size: _size,
       from: _from,
       query: {
-        bool: {
-          must: [
-          {
-            term: {
-              sentence_text: query_str
-            }
-          }
-          ]
+        query_string : {
+          default_field : "sentence_text",
+          query : query_str
         }
       }
     }
@@ -63,6 +58,7 @@ function search_by_class(_class){
   client.search({
     index: myindex,
     body: {
+      size: 1000,
       query: {
         nested: {
           path: "neuron.neuron_properties",

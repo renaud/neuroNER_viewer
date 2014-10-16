@@ -5,18 +5,14 @@ Author: renaud.richardet@epfl.ch
 
 
 
-### Installation
+### Requirements
 
-* MySQL server (5.5 or higher)
-* Python 2.7 
-* Python dependencies
-    * `pip install pymysql`
-    * `pip install simplejson`
-    * `pip install tornado`
+* Java Runtime Engine
 
-* install database from `bz2` file in `db/` folder
-* configure connection details in config.json
 
 ### Start
 
-    python server.py
+* start ES with `./bin/elasticsearch`
+* navigate to (http://localhost:9200/_plugin/neuroner/)
+
+    

@@ -31,7 +31,6 @@
                     e.preventDefault();
                     e.stopPropagation();
                     $('#search_btn').trigger('click');
-
                 }
             });
             // Search: button clicked
@@ -41,6 +40,11 @@
                 // update address
                 //LATER window.history.pushState(null, null, "/index.html?q="+query_str);
             });
+
+            default_search = function(){
+                $("#query_str").val('Purkinje');
+                simple_search('Purkinje', 100, 0);
+            }
 
             next_page = function(page){
                 var query_str = $("#query_str").val();
@@ -84,9 +88,10 @@
         <form class="form-inline">
             <div class="form-group col-xs-4">
                 <label class="sr-only" for="query_str">Neuron Property</label>
-                <input type="text" class="form-control no-return" id="query_str" placeholder="Enter Neuron Property" value="neurons" />
+                <input type="text" class="form-control no-return" id="query_str" placeholder="Enter Neuron Property" />
             </div>
             <button id="search_btn" type="button" class="btn btn-default">Search</button>
+            <a id="default_search" href="#" onclick="javascript:default_search();">try with 'Purkinje'</a>
         </form>
         <br/>
 
