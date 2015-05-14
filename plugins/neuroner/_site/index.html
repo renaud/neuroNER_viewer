@@ -47,7 +47,7 @@
       // called back from simple_search
       display_results = function(res, _size, _from){
         $("#results").empty();
-        $("#results").append('<p id="hits_cnt">Displaying results {0}-{1} from {2}:</p><ul>'.format(_from, _from + res.hits.length, res.total));
+        $("#results").append('<p id="hits_cnt">Displaying results {0}-{1} from {2}:</p><ul>'.format(_from, _from + res.hits.hits.length, res.hits.total));
         //console.log(res);
         $.each(res.hits.hits, function(index, hit) {
           var txt = hit._source.sentence_text;
@@ -71,7 +71,7 @@
         $("#results").append('</ul><p><a class="next_page" href="#" onclick="javascript:next_page('+_from+')"'+'">Next Page</a></p>');
 
         $.each(res.aggregations.agg__neuron_properties.agg__neuron_type.buckets, function(index, n_class) {
-            //console.log(n_class);
+            console.log(n_class);
             $("#aggs").append('<br/><h4 class="inline-a np_{0}">{1} [{2}]</h4><br/>'.format(n_class.key, n_class.key, n_class.doc_count));
             $.each(n_class.agg__property_text.buckets, function(index2, n_prop) {
               if (index2 < 10 ){
