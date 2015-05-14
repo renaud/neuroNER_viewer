@@ -1,4 +1,13 @@
-curl -XPOST localhost:9200/neuroner_20141014_2 -d '{
+#!/bin/bash
+
+if [ "$#" -ne 1 ]
+then
+  echo "need one arg, the index name"
+  exit 1
+fi
+
+
+curl -XPOST localhost:9200/$1 -d '{
     "mappings": {
         "sentence": {
             "properties": {

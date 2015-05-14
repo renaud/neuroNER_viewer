@@ -1,0 +1,23 @@
+
+{
+  "size": 0,
+  "aggregations": {
+    "agg__neuron_properties": {
+      "aggregations": {
+        "agg__type_": {
+          "terms": {
+            "field": "neuron.neuron_properties.neuron_type"
+          },
+          "aggregations" : {
+            "number_of_datasets" : {
+              "reverse_nested" : { }
+            }
+          }
+        }
+      },
+      "nested": {
+        "path": "neuron.neuron_properties"
+      }
+    }
+  }
+}

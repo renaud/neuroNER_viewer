@@ -1,10 +1,11 @@
 
-var myindex = 'neuroner_20141016';
+var myindex = 'neuroner_20150504_ft';
 
-var client = new elasticsearch.Client({
+var client = new elasticsearch.Client({ //log: 'trace'
+  //host: 'http://128.178.51.90:9200',
   host: 'localhost:9200',
-  //log: 'trace'
 });
+
 
 function simple_search(query_str, _size, _from){
   client.search({
@@ -17,63 +18,13 @@ function simple_search(query_str, _size, _from){
           default_field : "sentence_text",
           query : query_str
         }
-      }
+      },
+      aggregations: my_aggregations
     }
   }).then(function (resp) {
-    display_results(resp.hits, _size, _from);
+    display_results(resp, _size, _from);
   }, function (err) {
     console.trace("ES Search error" + err.message);
   });
 }
 
-
-function aggregate_classes(){
-  client.search({
-    index: myindex,
-    body: {
-      size: 0,
-      aggregations: {
-        "agg__neuron_properties": {
-          nested: {
-            path: "neuron.neuron_properties"
-          },
-          aggregations: {
-            "agg__type_": {
-              terms: {
-                field: "neuron.neuron_properties.neuron_type"
-              }
-            }
-          }
-        }
-      }
-    }
-  }).then(function (resp) {
-    display_classes(resp.aggregations.agg__neuron_properties.agg__type_.buckets);
-  }, function (err) {
-    console.trace(err.message);
-  });
-}
-
-function search_by_class(_class){
-  client.search({
-    index: myindex,
-    body: {
-      size: 1000,
-      query: {
-        nested: {
-          path: "neuron.neuron_properties",
-          query: {
-            match: {
-              "neuron.neuron_properties.neuron_type": _class
-            }
-          }
-        }
-      }
-    }
-  }).then(function (resp) {
-    console.log(resp);
-    display_results(resp.hits, 100, 0);
-  }, function (err) {
-    console.trace(err.message);
-  });
-}

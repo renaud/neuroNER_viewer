@@ -1,0 +1,16 @@
+{
+    "from": 0,
+    "query": {
+        "bool": {
+            "must": [
+                {
+                    "query_string": {
+                        "default_field": "sentence.sentence_text",
+                        "query": "blah"
+                    }
+                }
+            ]
+        }
+    },
+    "size": 10
+}

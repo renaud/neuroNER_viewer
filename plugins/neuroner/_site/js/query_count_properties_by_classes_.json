@@ -1,0 +1,39 @@
+{
+  "size": 0,
+  "query": {
+    "nested": {
+      "path": "neuron.neuron_properties",
+      "query": {
+        "bool": {
+          "must": [
+            {
+              "match": {
+                "neuron.neuron_properties.neuron_type": "brainregion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "aggregations": {
+    "agg__neuron_properties": {
+      "aggregations": {
+        "agg__type_": {
+          "terms": {
+            "size": 0,
+            "field": "neuron.neuron_properties.property_text"
+          },
+          "aggregations": {
+            "number_of_datasets": {
+              "reverse_nested": {}
+            }
+          }
+        }
+      },
+      "nested": {
+        "path": "neuron.neuron_properties"
+      }
+    }
+  }
+}

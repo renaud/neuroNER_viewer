@@ -38,7 +38,7 @@ a.prop_class{
     box-shadow: 0 1px 3px rgba(15, 15, 15, 0.27);
 }
 
-.np_neuron { /*black*/
+.np_neurontrigger { /*black*/
     background-color: #dcdcdc;
     border: 1px solid #999999;
     color: #666666;
