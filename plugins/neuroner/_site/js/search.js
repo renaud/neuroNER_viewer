@@ -13,20 +13,10 @@ function simple_search(query_str, _size, _from){
     body: {
       size: _size,
       from: _from,
-      "query": {
-        "nested": {
-          "path": "neuron.neuron_properties",
-          "query": {
-            "bool": {
-              "must": [
-                {
-                  "match": {
-                    "neuron.neuron_properties.property_text": query_str
-                  }
-                }
-              ]
-            }
-          }
+      query: {
+        query_string : {
+          default_field : "sentence_text",
+          query : query_str
         }
       },
       aggregations: my_aggregations

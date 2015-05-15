@@ -28,6 +28,7 @@
       // Search: button clicked
       $("#search_btn").click(function(){
         $("#results").empty(); // resets
+        $("#aggs").empty();
         var query_str = $("#query_str").val();
         simple_search(query_str, 100, 0); // send to es
         // update address
@@ -71,16 +72,25 @@
         $("#results").append('</ul><p><a class="next_page" href="#" onclick="javascript:next_page('+_from+')"'+'">Next Page</a></p>');
 
         $.each(res.aggregations.agg__neuron_properties.agg__neuron_type.buckets, function(index, n_class) {
-            console.log(n_class);
+            //console.log(n_class);
             $("#aggs").append('<br/><h4 class="inline-a np_{0}">{1} [{2}]</h4><br/>'.format(n_class.key, n_class.key, n_class.doc_count));
             $.each(n_class.agg__property_text.buckets, function(index2, n_prop) {
               if (index2 < 10 ){
-                $("#aggs").append('<span class="inline-a np_{0}">{1} [{2}]</span> '.format(n_class.key, n_prop.key, n_prop.doc_count));
+                $("#aggs").append('<span class="aggs_prop inline-a np_{0}" onclick="add_to_search(\'{1}\')">{2} [{3}]</span> '.format(
+                  n_class.key, n_prop.key, n_prop.key, n_prop.doc_count));
               }
             });
         });
+      };
 
-      }
+      add_to_search = function(txt){
+        //console.log('add_search::'+txt);
+        var query_str = $("#query_str").val() + ' '+ txt;
+        $("#query_str").val(query_str);
+        $("#results").empty(); // resets
+        $("#aggs").empty();
+        simple_search(query_str, 100, 0); // send to es
+      };
     });
 </script>
 </head>
