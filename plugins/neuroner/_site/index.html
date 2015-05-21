@@ -7,17 +7,21 @@
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
 
+  <!-- LIBS -->
   <script src="//code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
   <script src="js/purl.js" type="text/javascript"></script>
   <script src="js/utils.js" type="text/javascript"></script>
   <script src="js/elasticsearch.js" type="text/javascript"></script>
+
+  <!-- MY CODE -->
+  <script src="config.js" type="text/javascript"></script>
   <script src="js/query3.js" type="text/javascript"></script>
   <script src="js/search.js" type="text/javascript"></script>
 
   <script type="text/javascript">
     $(document).ready(function() {
 
-      // Search: enter key pressed
+      // Search field: on enter-key pressed
       $('#query_str').keypress(function(e) {
         if (e.which == '13') {
           e.preventDefault();
@@ -26,13 +30,14 @@
         }
       });
 
+      // resets containers and add spinning wheel
       reset_ui = function(){
         $("#results").empty(); // resets
         $("#results").append('<img src="loading.gif" alt="Loading..." />');
         $("#aggs").empty();
       }
 
-      // Search: button clicked
+      // Search: on button clicked
       $("#search_btn").click(function(){
         var query_str = $("#query_str").val();
         reset_ui();
@@ -41,6 +46,7 @@
         //LATER window.history.pushState(null, null, "/index.html?q="+query_str);
       });
 
+      // on Purkinje link pressed
       default_search = function(){
         $("#query_str").val('Purkinje');
         reset_ui();
@@ -53,7 +59,8 @@
         simple_search(query_str, 100, page + 100); // send to es
       }
 
-      // called back from simple_search
+      // called back from simple_search, see js/search.js
+      // adds results and aggregations
       display_results = function(res, _size, _from){
         $("#results").empty();
         $("#results").append('<p id="hits_cnt">Displaying results {0}-{1} from {2}:</p><ul>'.format(_from, _from + res.hits.hits.length, res.hits.total));
@@ -73,12 +80,13 @@
             });
           });
           newTxt = txt.substring(0, last) + newTxt;
-
           $("#results").append('<p>{0} (<a href="http://www.ncbi.nlm.nih.gov/pubmed/{1}">PubMed</a>)</p>'
             .format(newTxt, hit._source.pm_id));
         });
         $("#results").append('</ul><p><a class="next_page" href="#" onclick="javascript:next_page('+_from+')"'+'">Next Page</a></p>');
 
+        // aggregations
+        $("#aggs").append('<h3>Co-occurences:</h3><p>(click to add to the search)</p>');
         $.each(res.aggregations.agg__neuron_properties.agg__neuron_type.buckets, function(index, n_class) {
             //console.log(n_class);
             $("#aggs").append('<br/><h4 class="inline-a np_{0}">{1} [{2}]</h4><br/>'.format(n_class.key, n_class.key, n_class.doc_count));
