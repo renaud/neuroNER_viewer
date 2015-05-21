@@ -25,11 +25,17 @@
           $('#search_btn').trigger('click');
         }
       });
+
+      reset_ui = function(){
+        $("#results").empty(); // resets
+        $("#results").append('<img src="loading.gif" alt="Loading..." />');
+        $("#aggs").empty();
+      }
+
       // Search: button clicked
       $("#search_btn").click(function(){
-        $("#results").empty(); // resets
-        $("#aggs").empty();
         var query_str = $("#query_str").val();
+        reset_ui();
         simple_search(query_str, 100, 0); // send to es
         // update address
         //LATER window.history.pushState(null, null, "/index.html?q="+query_str);
@@ -37,11 +43,13 @@
 
       default_search = function(){
         $("#query_str").val('Purkinje');
+        reset_ui();
         simple_search('Purkinje', 100, 0);
       }
 
       next_page = function(page){
         var query_str = $("#query_str").val();
+        reset_ui();
         simple_search(query_str, 100, page + 100); // send to es
       }
 
@@ -87,8 +95,7 @@
         //console.log('add_search::'+txt);
         var query_str = $("#query_str").val() + ' '+ txt;
         $("#query_str").val(query_str);
-        $("#results").empty(); // resets
-        $("#aggs").empty();
+        reset_ui();
         simple_search(query_str, 100, 0); // send to es
       };
     });
@@ -97,7 +104,7 @@
 <body>
   <div class="container">
 
-    <h3 id="title">Cell types from the literature</h3>
+    <h3 id="title">[neuroNER]: search cell types from the literature</h3>
 
     <div id="prop_classes"></div><br/>
 
