@@ -13,10 +13,26 @@ function simple_search(query_str, _size, _from){
     body: {
       size: _size,
       from: _from,
-      query: {
+      /*query: {
         query_string : {
-          default_field : "sentence_text",
+          default_field : "neuron.neuron_text",
           query : query_str
+        }
+      },*/
+      query: {
+        nested: {
+          path: "neuron",
+          query: {
+            bool: {
+              must: [
+                {
+                  match: {
+                    "neuron.neuron_text" : query_str
+                  }
+                }
+              ]
+            }
+          }
         }
       },
       aggregations: my_aggregations
