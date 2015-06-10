@@ -18,14 +18,11 @@ function simple_search(query_str, _size, _from){
         nested: {
           path: "neuron",
           query: {
-            bool: {
-              must: [
-                {
-                  match: {
-                    "neuron.neuron_text" : query_str
-                  }
-                }
-              ]
+            match: {
+              "neuron.neuron_text" : {
+                "query":    query_str,
+                "operator": "and"
+              }
             }
           }
         }
