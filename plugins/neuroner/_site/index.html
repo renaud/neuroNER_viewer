@@ -80,8 +80,10 @@
             });
           });
           newTxt = txt.substring(0, last) + newTxt;
-          $("#results").append('<p>{0} (<a href="http://www.ncbi.nlm.nih.gov/pubmed/{1}">PubMed</a>)</p>'
-            .format(newTxt, hit._source.pm_id));
+          console.log(hit._source);
+          var author =
+          $("#results").append('<p>{0} [<a href="http://www.ncbi.nlm.nih.gov/pubmed/{1}">{2}, {3}</a>]</p>'
+            .format(newTxt, hit._source.pm_id, hit._source.authors[0], hit._source.published_date.substring(0,4)));
         });
         $("#results").append('</ul><p><a class="next_page" href="#" onclick="javascript:next_page('+_from+')"'+'">Next Page</a></p>');
 
