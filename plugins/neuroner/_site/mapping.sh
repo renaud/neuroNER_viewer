@@ -9,12 +9,18 @@ fi
 
 curl -XPOST localhost:9200/$1 -d '{
     "mappings": {
-        "sentence": {
+        "abstract_": {
             "properties": {
-                "sentence_text": {
+                "abstract_text": {
                     "type": "string",
-                    "store" : true,
-                    "index" : "analyzed"
+                    "store" : true
+                },
+                "authors" : {
+                    "type": "string",
+                    "store" : true
+                },
+                "published_date" : {
+                    "type": "date"
                 },
                 "pmid": {
                     "type": "long"
@@ -24,7 +30,6 @@ curl -XPOST localhost:9200/$1 -d '{
                     "properties": {
                         "neuron_text": {
                             "type" : "string",
-                            "index" : "analyzed",
                             "fields" : {
                               "raw" : {"type" : "string"}
                             }
@@ -38,12 +43,22 @@ curl -XPOST localhost:9200/$1 -d '{
                                 "start": {
                                     "type": "long"
                                 },
-                                "property_text": {
-                                    "type": "string",
-                                    "index" : "analyzed"
-                                },
                                 "end": {
                                     "type": "long"
+                                },
+                                "property_text": {
+                                    "type": "string",
+                                    "index": "not_analyzed",
+                                    "fields": {
+                                       "analyzed": {
+                                          "type": "string",
+                                          "index": "analyzed"
+                                       }
+                                    }
+                                },
+                                "onto_id": {
+                                    "type": "string",
+                                    "index": "not_analyzed"
                                 }
                             }
                         },
@@ -54,7 +69,43 @@ curl -XPOST localhost:9200/$1 -d '{
                             "type": "long"
                         }
                     }
+                },
+
+                "all_neuron_properties": {
+                    "type" : "nested",
+                    "properties": {
+                        "neuron_type": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "long"
+                        },
+                        "end": {
+                            "type": "long"
+                        },
+                        "property_text": {
+                            "type": "string",
+                            "index": "not_analyzed",
+                            "fields": {
+                               "analyzed": {
+                                  "type": "string",
+                                  "index": "analyzed"
+                               }
+                            }
+                        },
+                        "onto_id": {
+                            "type": "string",
+                            "index": "not_analyzed"
+                        }
+                    }
+                },
+                "start": {
+                    "type": "long"
+                },
+                "end": {
+                    "type": "long"
                 }
+
             }
         }
     }
